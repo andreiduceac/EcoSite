@@ -1,0 +1,1 @@
+export const THRESHOLDS = { minAreaHa:0.5, maxAreaHa:5000, solarLow:900, solarHigh:2000, windLow:4, windHigh:8, recommendationLow:40, combinedMinimum:60, combinedGap:15, windLayoutMinimum:50, windAreaMinimumHa:25, roadMaxKm:5, powerMaxKm:10, substationMaxKm:15 };

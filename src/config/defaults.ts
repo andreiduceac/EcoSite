@@ -1,0 +1,11 @@
+export const DEFAULTS = { moduleEfficiency: 21, panelWattage: 450, usableLand: 70, groundCoverage: 0.4, systemLosses: 14, hubHeight: 100, shearExponent: 0.14, rotorDiameter: 100, turbineRatedMw: 3, setbackM: 100 };
+export type SolarInputs = Pick<typeof DEFAULTS, 'moduleEfficiency' | 'panelWattage' | 'usableLand' | 'groundCoverage' | 'systemLosses'>;
+export type WindInputs = Pick<typeof DEFAULTS, 'hubHeight' | 'shearExponent' | 'rotorDiameter' | 'turbineRatedMw' | 'setbackM'>;
+export const API = { cacheTtlMs: 86400000, coordinateDecimals: 4, timeoutMs: 45000, retries: 2, dailyYears: [2022,2023,2024], elevationMaxSamples: 81, elevationBatch: 100, osmBufferKm: 5 };
+export const DAYS = [31,28,31,30,31,30,31,31,30,31,30,31];
+export const SOLAR_MODEL = { tiltLatitudeFactor: 0.76, tiltOffset: 3.1, temperatureThresholdC: 25, temperatureCoefficient: 0.004, seasonalPenaltyMax: 10, seasonalBaseline: 2, seasonalPenaltyFactor: 1.5 };
+export const WIND_MODEL = { referenceHeight: 50, cutIn: 3, rated: 12, cutOut: 25, crosswindD: 5, downwindD: 8, sectors: 16, weibullCvExponent: -1.086, weibullMinK: 1, weibullMaxK: 5, integrationStep: 0.1, minimumObservations: 100, minimumDirectionObservations: 100 };
+export const TERRAIN_MODEL = { favorableSlope: 10, maximumSlope: 30, solarAzimuth: 180, slopeWeight: 80, aspectWeight: 20, minimumGridSpacingM:90, gridDivisions:8 };
+export const ENVIRONMENT_MODEL = { protectedPenalty: 75, waterPenalty: 50, forestPenalty: 30, wetThreshold: 1500, wetPenalty: 10 };
+export const WIND_BANDS = [{max:4,cf:0.05},{max:5,cf:0.12},{max:6,cf:0.2},{max:7,cf:0.28},{max:8,cf:0.36},{max:Infinity,cf:0.44}];
+export const TERRAIN_OVERLAY = {lowSlope:10,mediumSlope:20,colors:['#8cad79','#d0b16c','#9d5447']};

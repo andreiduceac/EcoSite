@@ -1,0 +1,10 @@
+import { THRESHOLDS } from '../config/thresholds';
+export type Recommendation='SOLAR'|'WIND'|'SOLAR_PLUS_WIND'|'LOW_SUITABILITY';
+export function recommend(overall:number|null,solar:number|null,wind:number|null,hardFlag:boolean):{type:Recommendation|null;reasons:string[];whyNot:string}{
+ if(overall===null)return {type:null,reasons:['No score components could be assessed.'],whyNot:'Both technologies need source data before comparison.'};
+ if(hardFlag||overall<THRESHOLDS.recommendationLow)return {type:'LOW_SUITABILITY',reasons:[hardFlag?'Protected-area intersection requires environmental review before development.':`Overall suitability ${overall.toFixed(1)} is below ${THRESHOLDS.recommendationLow}.`],whyNot:hardFlag?'Why not solar or wind? A protected-area intersection flags both options.':`Why not solar or wind? The available weighted components score ${overall.toFixed(1)}/100.`};
+ if(solar===null&&wind===null)return {type:null,reasons:['Neither energy resource could be assessed.'],whyNot:'Solar and wind source data are missing; the overall score alone cannot select a technology.'};
+ if(solar!==null&&wind!==null&&solar>=THRESHOLDS.combinedMinimum&&wind>=THRESHOLDS.combinedMinimum&&Math.abs(solar-wind)<=THRESHOLDS.combinedGap)return {type:'SOLAR_PLUS_WIND',reasons:[`Both resource scores are at least ${THRESHOLDS.combinedMinimum} (solar ${solar.toFixed(1)}, wind ${wind.toFixed(1)}).`,`Their ${Math.abs(solar-wind).toFixed(1)}-point difference is within ${THRESHOLDS.combinedGap} points.`],whyNot:'Why not one technology? Both pass the configured thresholds; a combined concept merits further study.'};
+ const useSolar=wind===null||(solar!==null&&solar>=wind);const score=useSolar?solar!:wind!;const other=useSolar?wind:solar;
+ return {type:useSolar?'SOLAR':'WIND',reasons:[`${useSolar?'Solar':'Wind'} has the higher available resource score (${score.toFixed(1)}/100).`],whyNot:`Why not ${useSolar?'wind':'solar'}? ${other===null?'That resource is Not assessed; this recommendation is provisional.':`Its score is ${other.toFixed(1)}, compared with ${score.toFixed(1)}; combined suitability thresholds are not met.`}`};
+}
